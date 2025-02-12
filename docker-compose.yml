@@ -1,1 +1,46 @@
 
+version: "3.9"
+
+services:
+  app:
+    build:.
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - weaviate
+      - arangodb
+    environment:
+      - POSTGRES_CONNECTION_STRING=postgresql://postgres:password@postgres:5432/your_db
+      - GEMINI_API_KEY=YOUR_ACTUAL_API_KEY  # Or use Docker secrets
+    volumes:
+      -./data:/app/data
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: your_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  weaviate:
+    image: semitechnologies/weaviate:1.18.0
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+
+  arangodb:
+    image: arangodb:3.9
+    environment:
+      ARANGO_ROOT_PASSWORD: password
+    volumes:
+      - arangodb_data:/var/lib/arangodb
+
+volumes:
+  postgres_data:
+  weaviate_data:
+  arangodb_data:
