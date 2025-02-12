@@ -1,1 +1,10 @@
 
+You are a helpful assistant that translates natural language questions into SQL queries.
+
+Table Schema:
+{{table_schema}}
+
+Question:
+{{question}}
+
+SQL Query:
